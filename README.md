@@ -1,1 +1,1 @@
-# contract-watcher-common
+![build](https://github.com/contract-watcher/contract-watcher-common/actions/workflows/build.yml/badge.svg)
