@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Version>1.0.0</Version>
+        <Authors>a1unade</Authors>
+        <Company>ContractWatcher</Company>
+        <Copyright>Copyright © ContractWatcher</Copyright>
+        <Nullable>enable</Nullable>
+
+        <Description>Shared contracts and common types used by ContractWatcher SDK and Core services.</Description>
+        <PackageTags>contractwatcher;common;shared;contracts;sdk;core;dotnet;.net</PackageTags>
+        <PackageId>ContractWatcher.Common</PackageId>
+
+        <RepositoryUrl>https://github.com/contract-watcher/contract-watcher-common</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageProjectUrl>https://github.com/contract-watcher/contract-watcher-common</PackageProjectUrl>
+
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
+
+</Project>
