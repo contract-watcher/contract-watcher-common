@@ -6,6 +6,11 @@ namespace ContractWatcher.Common.Contracts;
 public sealed class PublishedContract
 {
     /// <summary>
+    /// Уникальное имя контракта в рамках текущей интеграции
+    /// </summary>
+    public required string Slug { get; init; }
+    
+    /// <summary>
     /// Версия контракта
     /// </summary>
     public required int ContractVersion { get; init; }
