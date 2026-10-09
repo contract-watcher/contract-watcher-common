@@ -1,0 +1,23 @@
+{
+  "integrationId": "22222222-2222-4222-8222-222222222222",
+  "contractId": "33333333-3333-4333-8333-333333333333",
+  "report": {
+    "reportId": "66666666-6666-4666-8666-666666666666",
+    "contractVersion": 3,
+    "status": "Failed",
+    "violations": [
+      {
+        "fieldName": "customer_id",
+        "type": "RequiredFieldMissing",
+        "expectedType": "String",
+        "actualType": null
+      },
+      {
+        "fieldName": "amount",
+        "type": "TypeMismatch",
+        "expectedType": "Number",
+        "actualType": "String"
+      }
+    ]
+  }
+}
