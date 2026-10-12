@@ -1,0 +1,13 @@
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Отчет содержит некорректные данные.",
+  "instance": "/internal/v1/reports",
+  "code": "VALIDATION_REPORT_INVALID",
+  "errors": {
+    "report.violations[0].actualType": [
+      "Фактический тип должен отличаться от ожидаемого."
+    ]
+  }
+}
