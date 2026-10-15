@@ -1,0 +1,31 @@
+{
+  "items": [
+    {
+      "reportId": "99999999-9999-4999-8999-999999999999",
+      "contractId": "33333333-3333-4333-8333-333333333333",
+      "contractVersion": 3,
+      "status": "Failed",
+      "receivedAt": "2026-10-09T12:02:00.000Z",
+      "violationCount": 3
+    },
+    {
+      "reportId": "77777777-7777-4777-8777-777777777777",
+      "contractId": "33333333-3333-4333-8333-333333333333",
+      "contractVersion": 3,
+      "status": "Passed",
+      "receivedAt": "2026-10-09T12:01:00.000Z",
+      "violationCount": 0
+    },
+    {
+      "reportId": "66666666-6666-4666-8666-666666666666",
+      "contractId": "33333333-3333-4333-8333-333333333333",
+      "contractVersion": 3,
+      "status": "Failed",
+      "receivedAt": "2026-10-09T12:00:00.000Z",
+      "violationCount": 2
+    }
+  ],
+  "total": 3,
+  "offset": 0,
+  "limit": 20
+}

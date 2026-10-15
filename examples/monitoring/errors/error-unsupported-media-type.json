@@ -1,0 +1,9 @@
+{
+  "type": "about:blank",
+  "title": "Unsupported Media Type",
+  "status": 415,
+  "detail": "Требуется Content-Type application/json.",
+  "instance": "/internal/v1/reports",
+  "code": "UNSUPPORTED_MEDIA_TYPE",
+  "errors": {}
+}

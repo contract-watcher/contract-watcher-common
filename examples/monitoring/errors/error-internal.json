@@ -1,0 +1,9 @@
+{
+  "type": "about:blank",
+  "title": "Internal Server Error",
+  "status": 500,
+  "detail": "Не удалось прочитать отчет.",
+  "instance": "/internal/v1/integrations/22222222-2222-4222-8222-222222222222/reports/66666666-6666-4666-8666-666666666666",
+  "code": "INTERNAL_ERROR",
+  "errors": {}
+}
