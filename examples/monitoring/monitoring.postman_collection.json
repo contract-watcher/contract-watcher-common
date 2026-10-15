@@ -1,0 +1,385 @@
+{
+  "info": {
+    "name": "Monitoring: отчеты, история, подробности",
+    "description": "Примеры запросов Monitoring. Адрес сервиса и идентификаторы задаются переменными. Первый запрос создает новые reportId для трех отчетов. Запросы выполняются по порядку; время приема и UUID групп возвращает сервис.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "monitoringBaseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "integrationId",
+      "value": "22222222-2222-4222-8222-222222222222",
+      "type": "string"
+    },
+    {
+      "key": "contractId",
+      "value": "33333333-3333-4333-8333-333333333333",
+      "type": "string"
+    },
+    {
+      "key": "contractVersion",
+      "value": "3",
+      "type": "string"
+    },
+    {
+      "key": "passedReportId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "failedReportId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "repeatedReportId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "01. Passed: новый набор ID",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "for (const name of [\"passedReportId\", \"failedReportId\", \"repeatedReportId\"]) pm.collectionVariables.set(name, pm.variables.replaceIn(\"{{$guid}}\"));",
+              "pm.collectionVariables.unset(\"failedReceivedAt\");"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test(\"Подтверждение отчета\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"passedReportId\")); pm.expect(body.duplicate).to.eql(false); pm.expect(body.receivedAt).to.match(/Z$/); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"integrationId\": \"{{integrationId}}\",\n  \"contractId\": \"{{contractId}}\",\n  \"report\": {\n    \"reportId\": \"{{passedReportId}}\",\n    \"contractVersion\": {{contractVersion}},\n    \"status\": \"Passed\",\n    \"violations\": []\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{monitoringBaseUrl}}/internal/v1/reports"
+      }
+    },
+    {
+      "name": "02. Failed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test(\"Подтверждение отчета\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"failedReportId\")); pm.expect(body.duplicate).to.eql(false); pm.expect(body.receivedAt).to.match(/Z$/); });",
+              "pm.collectionVariables.set(\"failedReceivedAt\", body.receivedAt);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"integrationId\": \"{{integrationId}}\",\n  \"contractId\": \"{{contractId}}\",\n  \"report\": {\n    \"reportId\": \"{{failedReportId}}\",\n    \"contractVersion\": {{contractVersion}},\n    \"status\": \"Failed\",\n    \"violations\": [\n      {\n        \"fieldName\": \"customer_id\",\n        \"type\": \"RequiredFieldMissing\",\n        \"expectedType\": \"String\",\n        \"actualType\": null\n      },\n      {\n        \"fieldName\": \"amount\",\n        \"type\": \"TypeMismatch\",\n        \"expectedType\": \"Number\",\n        \"actualType\": \"String\"\n      }\n    ]\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{monitoringBaseUrl}}/internal/v1/reports"
+      }
+    },
+    {
+      "name": "03. Failed с одинаковыми нарушениями",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "const body = pm.response.json();",
+              "pm.test(\"Подтверждение отчета\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"repeatedReportId\")); pm.expect(body.duplicate).to.eql(false); pm.expect(body.receivedAt).to.match(/Z$/); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"integrationId\": \"{{integrationId}}\",\n  \"contractId\": \"{{contractId}}\",\n  \"report\": {\n    \"reportId\": \"{{repeatedReportId}}\",\n    \"contractVersion\": {{contractVersion}},\n    \"status\": \"Failed\",\n    \"violations\": [\n      {\n        \"fieldName\": \"amount\",\n        \"type\": \"TypeMismatch\",\n        \"expectedType\": \"Number\",\n        \"actualType\": \"String\"\n      },\n      {\n        \"fieldName\": \"customer_id\",\n        \"type\": \"RequiredFieldMissing\",\n        \"expectedType\": \"String\",\n        \"actualType\": null\n      },\n      {\n        \"fieldName\": \"amount\",\n        \"type\": \"TypeMismatch\",\n        \"expectedType\": \"Number\",\n        \"actualType\": \"String\"\n      }\n    ]\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{monitoringBaseUrl}}/internal/v1/reports"
+      }
+    },
+    {
+      "name": "04. История интеграции",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"В истории есть созданные отчеты\", () => { pm.expect(body.items).to.be.an(\"array\"); const ids = body.items.map(x => x.reportId); for (const name of [\"passedReportId\", \"failedReportId\", \"repeatedReportId\"]) pm.expect(ids).to.include(pm.collectionVariables.get(name)); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{monitoringBaseUrl}}/internal/v1/integrations/{{integrationId}}/reports?offset=0&limit=100"
+      }
+    },
+    {
+      "name": "05. История только Failed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"Фильтр результата\", () => { pm.expect(body.items.length).to.be.at.least(2); pm.expect(body.items.every(x => x.status === \"Failed\")).to.eql(true); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{monitoringBaseUrl}}/internal/v1/integrations/{{integrationId}}/reports?status=Failed&offset=0&limit=100"
+      }
+    },
+    {
+      "name": "06. Подробности Passed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"Заголовок и список\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"passedReportId\")); pm.expect(body.status).to.eql(\"Passed\"); pm.expect(body.violationCount).to.eql(0); pm.expect(body.violations).to.have.lengthOf(0); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{monitoringBaseUrl}}/internal/v1/integrations/{{integrationId}}/reports/{{passedReportId}}"
+      }
+    },
+    {
+      "name": "07. Подробности Failed",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"Заголовок и список\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"failedReportId\")); pm.expect(body.status).to.eql(\"Failed\"); pm.expect(body.violationCount).to.eql(2); pm.expect(body.violations).to.have.lengthOf(2); });",
+              "pm.test(\"Сохраненное время и nullable actualType\", () => { pm.expect(body.receivedAt).to.eql(pm.collectionVariables.get(\"failedReceivedAt\")); pm.expect(body.violations[0].actualType).to.eql(null); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{monitoringBaseUrl}}/internal/v1/integrations/{{integrationId}}/reports/{{failedReportId}}"
+      }
+    },
+    {
+      "name": "08. Подробности с повторами",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"Заголовок и список\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"repeatedReportId\")); pm.expect(body.status).to.eql(\"Failed\"); pm.expect(body.violationCount).to.eql(3); pm.expect(body.violations).to.have.lengthOf(3); });",
+              "pm.test(\"Повторы и исходный порядок сохранены\", () => { pm.expect(body.violations[0]).to.deep.eql(body.violations[2]); pm.expect(body.violations[1].type).to.eql(\"RequiredFieldMissing\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{monitoringBaseUrl}}/internal/v1/integrations/{{integrationId}}/reports/{{repeatedReportId}}"
+      }
+    },
+    {
+      "name": "09. Повтор Failed без новой записи",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "const body = pm.response.json();",
+              "pm.test(\"Подтверждение отчета\", () => { pm.expect(body.reportId).to.eql(pm.collectionVariables.get(\"failedReportId\")); pm.expect(body.duplicate).to.eql(true); pm.expect(body.receivedAt).to.match(/Z$/); });",
+              "pm.test(\"Время первого приема сохранено\", () => pm.expect(body.receivedAt).to.eql(pm.collectionVariables.get(\"failedReceivedAt\")));"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"integrationId\": \"{{integrationId}}\",\n  \"contractId\": \"{{contractId}}\",\n  \"report\": {\n    \"reportId\": \"{{failedReportId}}\",\n    \"contractVersion\": {{contractVersion}},\n    \"status\": \"Failed\",\n    \"violations\": [\n      {\n        \"fieldName\": \"customer_id\",\n        \"type\": \"RequiredFieldMissing\",\n        \"expectedType\": \"String\",\n        \"actualType\": null\n      },\n      {\n        \"fieldName\": \"amount\",\n        \"type\": \"TypeMismatch\",\n        \"expectedType\": \"Number\",\n        \"actualType\": \"String\"\n      }\n    ]\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": "{{monitoringBaseUrl}}/internal/v1/reports"
+      }
+    },
+    {
+      "name": "10. Неверный reportId",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+              "pm.test(\"Ошибка параметра\", () => { const body = pm.response.json(); pm.expect(body.code).to.eql(\"INVALID_REQUEST\"); pm.expect(body.errors.reportId).to.be.an(\"array\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{monitoringBaseUrl}}/internal/v1/integrations/{{integrationId}}/reports/invalid-report"
+      }
+    }
+  ]
+}

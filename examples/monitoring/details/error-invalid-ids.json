@@ -1,0 +1,16 @@
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Некорректные идентификаторы отчета.",
+  "instance": "/internal/v1/integrations/invalid-integration/reports/invalid-report",
+  "code": "INVALID_REQUEST",
+  "errors": {
+    "integrationId": [
+      "Требуется UUID в стандартной строковой записи."
+    ],
+    "reportId": [
+      "Требуется UUID в стандартной строковой записи."
+    ]
+  }
+}

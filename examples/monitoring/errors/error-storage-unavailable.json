@@ -1,0 +1,9 @@
+{
+  "type": "about:blank",
+  "title": "Service Unavailable",
+  "status": 503,
+  "detail": "Хранилище отчетов временно недоступно.",
+  "instance": "/internal/v1/reports",
+  "code": "STORAGE_UNAVAILABLE",
+  "errors": {}
+}

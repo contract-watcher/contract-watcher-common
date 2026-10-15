@@ -1,0 +1,9 @@
+{
+  "type": "about:blank",
+  "title": "Not Found",
+  "status": 404,
+  "detail": "Отчет не найден в указанной интеграции.",
+  "instance": "/internal/v1/integrations/22222222-2222-4222-8222-222222222222/reports/00000000-0000-0000-0000-000000000000",
+  "code": "REPORT_NOT_FOUND",
+  "errors": {}
+}
