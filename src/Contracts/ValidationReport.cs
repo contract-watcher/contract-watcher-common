@@ -8,6 +8,11 @@ namespace ContractWatcher.Common.Contracts;
 public sealed class ValidationReport
 {
     /// <summary>
+    /// Уникальное имя контракта в рамках текущей интеграции
+    /// </summary>
+    public required string Slug { get; init; }
+    
+    /// <summary>
     /// ID отчета проверки
     /// </summary>
     public required Guid ReportId { get; init; }
