@@ -1,9 +1,0 @@
-{
-  "type": "about:blank",
-  "title": "Conflict",
-  "status": 409,
-  "detail": "Отчет с таким идентификатором уже сохранен в интеграции.",
-  "instance": "/internal/v1/reports",
-  "code": "REPORT_ID_CONFLICT",
-  "errors": {}
-}

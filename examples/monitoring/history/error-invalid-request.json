@@ -1,0 +1,13 @@
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Некорректные параметры истории.",
+  "instance": "/internal/v1/integrations/22222222-2222-4222-8222-222222222222/reports",
+  "code": "INVALID_REQUEST",
+  "errors": {
+    "limit": [
+      "Требуется целое без знака и пробелов в диапазоне 1..100."
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "integrationId": "22222222-2222-4222-8222-222222222222",
+  "reportId": "66666666-6666-4666-8666-666666666666",
+  "contractId": "33333333-3333-4333-8333-333333333333",
+  "contractVersion": 3,
+  "status": "Failed",
+  "receivedAt": "2026-10-09T12:00:00.000Z",
+  "violationCount": 2,
+  "violations": [
+    {
+      "groupId": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+      "fieldName": "customer_id",
+      "type": "RequiredFieldMissing",
+      "expectedType": "String",
+      "actualType": null
+    },
+    {
+      "groupId": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+      "fieldName": "amount",
+      "type": "TypeMismatch",
+      "expectedType": "Number",
+      "actualType": "String"
+    }
+  ]
+}

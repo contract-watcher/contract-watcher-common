@@ -1,0 +1,9 @@
+{
+  "type": "about:blank",
+  "title": "Bad Request",
+  "status": 400,
+  "detail": "Некорректное тело запроса.",
+  "instance": "/internal/v1/reports",
+  "code": "INVALID_REQUEST",
+  "errors": {}
+}
