@@ -26,6 +26,11 @@ public sealed class ValidationReport
     /// Статус проверки контракта
     /// </summary>
     public required ValidationStatus Status { get; init; }
+    
+    /// <summary>
+    /// Время формирования отчета
+    /// </summary>
+    public DateTimeOffset Timestamp { get; set; }
 
     /// <summary>
     /// Ошибки валидации контракта
